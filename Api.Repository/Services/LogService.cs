@@ -68,6 +68,7 @@ namespace Api.Repository.Services
                 var t = Task.Run(() => _context.Logs.ForEachAsync(f => f.Box = "primary"));
                 t.Wait();
                 _context.SaveChanges();
+
                 response = "All logs have been moved to the primary.";
             }
             catch (Exception ex)
