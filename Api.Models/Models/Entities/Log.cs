@@ -39,13 +39,13 @@ namespace Application.Models
         {
             IList<Log> Logs = new List<Log>();
 
-            for (int i = 1; i < 10; i++)
+            for (int i = 1; i < 10000; i++)
             {
                 Logs.Add(new Log()
                 {
                     Id = i,
                     Description = $"Description {i}",
-                    Frequency = (i * 1000),
+                    Frequency = (i * 1),
                     Level = "High",
                     Origin = "OnModelCreating",
                     Box = i % 2 == 0 ? "primary" : "archive"
