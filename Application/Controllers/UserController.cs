@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Models.Models.Entities;
 using Api.Repository.Interfaces;
 using Application.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -148,6 +149,37 @@ namespace Api.Application.Controllers
                 return StatusCode(404, new { message = "Nenhum registro encontrado." });
 
             return Ok(user);
+        }
+
+        /// <summary>
+        /// Endpoints para Usuarios.
+        /// </summary>
+        /// <response code="200"> Usuários obtidos com sucesso.</response>
+        /// <response code="404"> Nenhum usuario encontrado.</response>
+        [ProducesResponseType(typeof(User), 200)]
+        [ProducesResponseType(404)]
+        [HttpPost("FirstStepRecover")]
+        [AllowAnonymous]
+        public ActionResult FirstStepRecover([FromBody] string email)
+        {
+            var user = _service.FirstStepRecover(email);
+
+            if (user == null)
+                return StatusCode(404, new { message = "Nenhum registro encontrado." });
+
+            return Ok(user);
+        }
+
+        /// <summary>
+        /// Endpoints para Usuarios.
+        /// </summary>
+        /// <response code="200"> Usuários obtidos com sucesso.</response>
+        [ProducesResponseType(typeof(User), 200)]
+        [HttpPost("SecondStepRecover")]
+        [AllowAnonymous]
+        public ActionResult SecondStepRecover([FromBody] Recover rec)
+        {
+            return Ok(_service.SecondStepRecover(rec));
         }
     }
 }

@@ -163,6 +163,20 @@ namespace Application.Controllers
         /// <summary>
         /// Endpoints para Logs.
         /// </summary>
+        /// <param name="logs">Lista de Logs para exclusão</param>
+        /// <response code="200"> Logs obtidos com sucesso.</response>
+        [ProducesResponseType(typeof(IList<LogViewModel>), 200)]
+        [HttpPost]
+        [Route("Delete")]
+        [Authorize]
+        public ActionResult Delete([FromBody] List<LogViewModel> logs)
+        {
+            return Ok(_service.Delete(logs));
+        }
+
+        /// <summary>
+        /// Endpoints para Logs.
+        /// </summary>
         /// <param name="logs">Lista de logs</param>
         /// <response code="200"> Logs obtidos com sucesso.</response>
         /// <response code="400"> Nenhum log enviado.</response>

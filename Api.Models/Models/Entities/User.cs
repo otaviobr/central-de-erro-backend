@@ -25,8 +25,10 @@ namespace Application.Models
         public static IList<User> ObterDados()
         {
             List<User> users = new List<User>();
+            
+            users.Add(new User() { Id = 1, Email = "otavio@otavio.com", Password = "otavio123" });
 
-            for (var i = 1; i < 10; i++)
+            for (var i = 2; i < 10; i++)
             {
                 users.Add(new User() { Id = i, Email = $"otavio{i}@otavio.com", Password = $"{i}123" });
             }

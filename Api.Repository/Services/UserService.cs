@@ -1,4 +1,5 @@
-﻿using Api.Repository.Interfaces;
+﻿using Api.Models.Models.Entities;
+using Api.Repository.Interfaces;
 using Application.Models;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace Api.Repository.Services
             }
 
             return _context.Users.FirstOrDefault(f => f.Email == model.Email && f.Password == model.Password);
-        } 
+        }
 
         public User Get(string email, string password)
         {
@@ -50,6 +51,26 @@ namespace Api.Repository.Services
         public User GetById(int id)
         {
             return _context.Users.Find(id);
+        }
+
+        public User FirstStepRecover(string email)
+        {
+            var user = _context.Users.FirstOrDefault(f => f.Email == email);
+            
+            if (user != null)
+                user.Password = "";
+
+            return user;
+        }
+
+        public User SecondStepRecover(Recover rec)
+        {
+
+            _context.Users.Find(rec.id).Password = rec.password;
+
+            _context.SaveChanges();
+
+            return _context.Users.Find(rec.id);
         }
     }
 }

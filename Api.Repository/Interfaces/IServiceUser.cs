@@ -1,4 +1,5 @@
-﻿using Application.Models;
+﻿using Api.Models.Models.Entities;
+using Application.Models;
 using System.Collections.Generic;
 
 namespace Api.Repository.Interfaces
@@ -9,6 +10,8 @@ namespace Api.Repository.Interfaces
         IList<User> GetAll();
         User GetByEmail(string email);
         User GetById(int id);
+        User FirstStepRecover(string email);
+        User SecondStepRecover(Recover rec);
 
     }
 }

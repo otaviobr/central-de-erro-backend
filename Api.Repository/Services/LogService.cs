@@ -180,9 +180,16 @@ namespace Api.Repository.Services
 
         public string Delete(List<LogViewModel> logs)
         {
-            //log.ForEach(f => _context.Logs.Remove(f));
-            //_context.SaveChanges();
-            return "Message(s) Deleted.";
+
+            foreach (var log in logs)
+            {
+                var list = _context.Logs.Where(w => log.Description == w.Description && log.Level == w.Level).ToList();
+                _context.Logs.RemoveRange(list);
+            }
+
+            _context.SaveChanges();
+
+            return "Log(s) Deleted.";
         }
 
         public List<LogViewModel> SearchFor(string env, string order, string search)
