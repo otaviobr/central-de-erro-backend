@@ -8,16 +8,18 @@ namespace Api.Repository.Interfaces
 {
     public interface IServiceLog
     {
+        Log Get(LogViewModel lvm);
         Log GetById(int id);
-        List<Log> GetAll();
-        List<Log> GetByBox(string box);
-        List<Log> GetByOrigin(string origin);
-        List<Log> GetByLevel(string level);
+        List<LogViewModel> GetAll();
+        List<LogViewModel> GetByBox(string box);
+        List<LogViewModel> GetByOrigin(string origin);
+        List<LogViewModel> GetByLevel(string level);
         List<Log> GetByFrequency(int frequency);
-        string ToArchive(List<Log> log);
-        string ToPrimary(List<Log> log);
+        string ToArchive(List<LogViewModel> logs);
+        string ToPrimary(List<LogViewModel> logs);
         string ToPrimaryAll();
-        string Delete(List<Log> log);
+        string Delete(List<LogViewModel> logs);
+        List<LogViewModel> SearchFor(string env, string order, string search);
 
     }
 }

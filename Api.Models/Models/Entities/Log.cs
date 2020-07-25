@@ -35,21 +35,60 @@ namespace Application.Models
         [Required]
         public string Box { get; set; }
 
+        [Column("Created_at")]
+        [Required]
+        public DateTime Created_at { get; set; }
+
+        public Log()
+        {
+
+        }
+
+        public Log(string origin, string level, string description, int frequency, string box)
+        {
+            Origin = origin;
+            Level = level;
+            Description = description;
+            Frequency = frequency;
+            Box = box;
+        }
+
         public static IList<Log> ObterDados()
         {
             IList<Log> Logs = new List<Log>();
 
-            for (int i = 1; i < 10000; i++)
+            for (int i = 1; i <= 1000; i++)
             {
                 Logs.Add(new Log()
                 {
                     Id = i,
-                    Description = $"Description {i}",
-                    Frequency = (i * 1),
-                    Level = "High",
-                    Origin = "OnModelCreating",
-                    Box = i % 2 == 0 ? "primary" : "archive"
+                    Description = "warning",
+                    Level = "warning",
+                    Origin = "Homologation",
+                    Box = "primary",
+                    Created_at = DateTime.Now
                 });
+
+                Logs.Add(new Log()
+                {
+                    Id = i + 2100,
+                    Description = "error",
+                    Level = "error",
+                    Origin = "Production",
+                    Box = "primary",
+                    Created_at = DateTime.Now
+                });
+
+                Logs.Add(new Log()
+                {
+                    Id = i + 3100,
+                    Description = "debug",
+                    Level = "debug",
+                    Origin = "Development",
+                    Box = "primary",
+                    Created_at = DateTime.Now
+                });
+
             }
 
             return Logs;

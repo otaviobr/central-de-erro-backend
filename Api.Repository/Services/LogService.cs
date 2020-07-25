@@ -17,14 +17,63 @@ namespace Api.Repository.Services
             _context = context;
         }
 
-        public List<Log> GetAll()
+        public Log Get(LogViewModel lvm)
         {
-            return _context.Logs.Where(w => w.Box == "primary").OrderBy(o => o.Id).ToList();
+            var log = _context.Logs.Where(w => lvm.Description == w.Description && lvm.Level == w.Level).FirstOrDefault();
+
+            return log;
         }
 
-        public List<Log> GetByBox(string box)
+        public List<LogViewModel> GetAll()
         {
-            return _context.Logs.Where(w => w.Box == box).ToList();
+            //return _context.Logs.Where(w => w.Box == "primary").OrderBy(o => o.Id).ToList();
+            var logs = _context.Logs.Where(w => w.Box == "primary");
+            var logsGrouped = logs
+                .GroupBy(g => new { Log = new { g.Level, g.Description }, Frequency = g.Level })
+                .Select(s => new LogViewModel()
+                {
+                    Description = s.Key.Log.Description.Trim(),
+                    Frequency = s.Count(),
+                    Level = s.Key.Log.Level.Trim(),
+                });
+
+            var logsList = logsGrouped.ToList().OrderBy(o => o.Frequency).ToList();
+
+            //Gambiarra
+            var i = 1;
+            foreach (var item in logsList)
+            {
+
+                item.Id = i;
+                i++;
+            }
+
+            return logsList;
+        }
+
+        public List<LogViewModel> GetByBox(string box)
+        {
+            var logs = _context.Logs.Where(w => w.Box == box);
+            var logsGrouped = logs.GroupBy(g => new { Log = g, Frequency = g.Level })
+                .Select(s => new LogViewModel()
+                {
+                    //s.Key.Log.Origin.Trim(), s.Key.Log.Level.Trim(), s.Key.Log.Description.Trim(), s.Count(), s.Key.Log.Box.Trim()
+                    Description = s.Key.Log.Description.Trim(),
+                    Frequency = s.Count(),
+                    Level = s.Key.Log.Level.Trim(),
+                });
+
+            //Gambiarra
+            var i = 1;
+            foreach (var item in logsGrouped)
+            {
+
+                item.Id = i;
+                i++;
+            }
+
+            var logsList = logsGrouped.ToList();
+            return logsList;
         }
 
         public List<Log> GetByFrequency(int frequency)
@@ -37,27 +86,77 @@ namespace Api.Repository.Services
             return _context.Logs.Find(id);
         }
 
-        public List<Log> GetByLevel(string level)
+        public List<LogViewModel> GetByLevel(string level)
         {
-            return _context.Logs.Where(w => w.Level == level).ToList();
+            var logs = _context.Logs.Where(w => w.Level == level)
+                .Select(s => new LogViewModel
+                {
+                    Level = s.Level,
+                    Description = s.Description,
+                    Frequency = s.Frequency
+                }).ToList();
+
+            //Gambiarra
+            var i = 1;
+            foreach (var item in logs)
+            {
+
+                item.Id = i;
+                i++;
+            }
+
+            return logs;
         }
 
-        public List<Log> GetByOrigin(string origin)
+        public List<LogViewModel> GetByOrigin(string origin)
         {
-            return _context.Logs.Where(w => w.Origin == origin).ToList();
+            var logs = _context.Logs.Where(w => w.Origin == origin)
+                .Select(s => new LogViewModel
+                {
+                    Level = s.Level,
+                    Description = s.Description,
+                    Frequency = s.Frequency
+                }).ToList();
+
+            //Gambiarra
+            var i = 1;
+            foreach (var item in logs)
+            {
+
+                item.Id = i;
+                i++;
+            }
+
+            return logs;
         }
 
-        public string ToArchive(List<Log> log)
+        public string ToArchive(List<LogViewModel> logs)
         {
-            log.ForEach(f => _context.Logs.Find(f.Id).Box = "archive");
-            _context.SaveChanges();
+
+            foreach (var log in logs)
+            {
+                var task = Task.Run(() => _context.Logs.Where(w => w.Description == log.Description && log.Level == w.Level)
+                    .ForEachAsync(f => f.Box = "archive"));
+
+                task.Wait();
+
+                _context.SaveChanges();
+            }
+
             return "Archived log(s).";
         }
 
-        public string ToPrimary(List<Log> log)
+        public string ToPrimary(List<LogViewModel> logs)
         {
-            log.ForEach(f => _context.Logs.Find(f.Id).Box = "primary");
-            _context.SaveChanges();
+            foreach (var log in logs)
+            {
+                var task = Task.Run(() => _context.Logs.Where(w => w.Description == log.Description && log.Level == w.Level)
+                    .ForEachAsync(f => f.Box = "primary"));
+
+                task.Wait();
+
+                _context.SaveChanges();
+            }
             return "Unarchived log(s).";
         }
         public string ToPrimaryAll()
@@ -79,11 +178,40 @@ namespace Api.Repository.Services
             return response;
         }
 
-        public string Delete(List<Log> log)
+        public string Delete(List<LogViewModel> logs)
         {
-            log.ForEach(f => _context.Logs.Remove(f));
-            _context.SaveChanges();
+            //log.ForEach(f => _context.Logs.Remove(f));
+            //_context.SaveChanges();
             return "Message(s) Deleted.";
+        }
+
+        public List<LogViewModel> SearchFor(string env, string order, string search)
+        {
+            var logs = _context.Logs.Where(w => w.Origin == env);
+            var logsSorted = order.ToLower() == "frequency" ? logs.OrderBy(o => o.Frequency) : logs.OrderBy(o => o.Level);
+            var logsSearched = logsSorted.Where(w => w.Level.Contains(search) || w.Description.Contains(search) || w.Origin.Contains(search)).ToList();
+
+            var logGrouped = logsSearched.GroupBy(g => new { g.Description, g.Frequency, g.Level });
+
+            var logViewModel = logGrouped
+            .Select(s => new LogViewModel()
+            {
+                Description = s.Key.Description,
+                Frequency = s.Count(),
+                Level = s.Key.Level,
+            })
+            .ToList();
+
+            //Gambiarra
+            var i = 1;
+            foreach (var item in logViewModel)
+            {
+
+                item.Id = i;
+                i++;
+            }
+
+            return logViewModel;
         }
 
     }
