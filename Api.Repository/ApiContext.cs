@@ -23,7 +23,7 @@ namespace Api.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Log>().HasData(Log.ObterDados());
-            modelBuilder.Entity<User>().HasData(User.ObterDados());
+            //modelBuilder.Entity<User>().HasData(User.ObterDados());
         }
     }
 }

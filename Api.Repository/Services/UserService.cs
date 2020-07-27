@@ -72,5 +72,15 @@ namespace Api.Repository.Services
 
             return _context.Users.Find(rec.id);
         }
+
+        public User NewUser(User user)
+        {
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            var userCreated = _context.Users.FirstOrDefault(f => f.Email == user.Email);
+
+            return userCreated;
+        }
     }
 }

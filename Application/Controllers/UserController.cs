@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Api.Models.Models.Entities;
+﻿using Api.Models.Models.Entities;
 using Api.Repository.Interfaces;
 using Application.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Api.Application.Controllers
 {
-    
+
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : Controller
@@ -180,6 +177,37 @@ namespace Api.Application.Controllers
         public ActionResult SecondStepRecover([FromBody] Recover rec)
         {
             return Ok(_service.SecondStepRecover(rec));
+        }
+
+        /// <summary>
+        /// Endpoints para Usuarios.
+        /// </summary>
+        /// <response code="200"> Usuários obtidos com sucesso.</response>
+        /// <response code="400"> Email já registrado ou nulo.</response>
+        [ProducesResponseType(typeof(User), 200)]
+        [ProducesResponseType(typeof(User), 200)]
+        [HttpPost("NewUser")]
+        [AllowAnonymous]
+        public ActionResult NewUser([FromBody] UserViewModel user)
+        {
+            if (user == null)
+                return BadRequest("Error. Null params");
+            
+            if (user.Email == null || user.Password == null)
+                return BadRequest("Error. Email or Password are null.");
+
+            var userValidation = _service.GetByEmail(user.Email);
+            if (userValidation != null)
+                return StatusCode(400, "Email already registered");
+
+            var newUser = new User()
+            {
+                Email = user.Email,
+                Password = user.Password
+            };
+
+            var userCreated = _service.NewUser(newUser);
+            return Ok(userCreated);
         }
     }
 }

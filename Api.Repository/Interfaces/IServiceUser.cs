@@ -13,5 +13,7 @@ namespace Api.Repository.Interfaces
         User FirstStepRecover(string email);
         User SecondStepRecover(Recover rec);
 
+        User NewUser(User user);
+
     }
 }

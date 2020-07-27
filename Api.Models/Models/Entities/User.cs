@@ -11,6 +11,7 @@ namespace Application.Models
     {
         [Column("Id")]
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Column("Email")]
@@ -25,13 +26,6 @@ namespace Application.Models
         public static IList<User> ObterDados()
         {
             List<User> users = new List<User>();
-            
-            users.Add(new User() { Id = 1, Email = "otavio@otavio.com", Password = "otavio123" });
-
-            for (var i = 2; i < 10; i++)
-            {
-                users.Add(new User() { Id = i, Email = $"otavio{i}@otavio.com", Password = $"{i}123" });
-            }
 
             return users;
         }
