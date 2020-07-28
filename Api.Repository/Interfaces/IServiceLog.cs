@@ -8,6 +8,7 @@ namespace Api.Repository.Interfaces
 {
     public interface IServiceLog
     {
+        Log Create(Log lvm);
         Log Get(LogViewModel lvm);
         Log GetById(int id);
         List<LogViewModel> GetAll();

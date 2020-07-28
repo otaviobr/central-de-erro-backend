@@ -221,5 +221,12 @@ namespace Api.Repository.Services
             return logViewModel;
         }
 
+        public Log Create(Log log)
+        {
+            _context.Logs.Add(log);
+            _context.SaveChanges();
+
+            return _context.Logs.Find(log.Id);
+        }
     }
 }

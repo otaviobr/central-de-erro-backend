@@ -41,16 +41,7 @@ namespace Application.Models
 
         public Log()
         {
-
-        }
-
-        public Log(string origin, string level, string description, int frequency, string box)
-        {
-            Origin = origin;
-            Level = level;
-            Description = description;
-            Frequency = frequency;
-            Box = box;
+            Created_at = DateTime.Now;
         }
 
         public static IList<Log> ObterDados()

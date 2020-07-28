@@ -52,16 +52,6 @@ namespace Api.Application.Controllers
             };
         }
 
-        [HttpGet]
-        [Route("anonymous")]
-        [AllowAnonymous]
-        public string Anonymous() => "Anônimo";
-
-        [HttpGet]
-        [Route("authenticated")]
-        [Authorize]
-        public string Authenticated() => $"Autenticado: {User.Identity.Name}";
-
 
     }
 

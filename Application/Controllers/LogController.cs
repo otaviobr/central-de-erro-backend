@@ -22,6 +22,27 @@ namespace Application.Controllers
         /// <summary>
         /// Endpoints para Logs.
         /// </summary>
+        /// <param name="log">LogViewModel</param>
+        /// <response code="200"> Logs obtidos com sucesso.</response>
+        /// <response code="400"> Nenhum log encontrado.</response>
+        /// <response code="404"> Nenhum log encontrado.</response>
+        [ProducesResponseType(typeof(Log), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [Authorize]
+        [Route("Create")]
+        [HttpPost]
+        public ActionResult Create([FromBody] Log log)
+        {
+            if (log == null)
+                return StatusCode(400, "Object null.");
+
+            return Ok(_service.Create(log));
+        }
+
+        /// <summary>
+        /// Endpoints para Logs.
+        /// </summary>
         /// <param name="lvm">LogViewModel</param>
         /// <response code="200"> Logs obtidos com sucesso.</response>
         /// <response code="400"> Nenhum log encontrado.</response>
