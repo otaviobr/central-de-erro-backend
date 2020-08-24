@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Application", "Applicat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Repository", "Api.Repository\Api.Repository.csproj", "{F22BDDF2-9FE2-46FB-80F2-EBCDF2BF5475}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Models", "Api.Models\Api.Models.csproj", "{69B3810D-234A-49D1-A57C-6CBD8B4F247B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Models", "Api.Models\Api.Models.csproj", "{69B3810D-234A-49D1-A57C-6CBD8B4F247B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{7FFE344A-198A-47C6-B3AC-256F60AAEC40}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "library", "library", "{03E8095E-6BFD-42F7-BCBE-D61A4589D674}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +34,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E04B8220-99D6-44D0-BDF9-60ADD222C97F} = {7FFE344A-198A-47C6-B3AC-256F60AAEC40}
+		{F22BDDF2-9FE2-46FB-80F2-EBCDF2BF5475} = {03E8095E-6BFD-42F7-BCBE-D61A4589D674}
+		{69B3810D-234A-49D1-A57C-6CBD8B4F247B} = {03E8095E-6BFD-42F7-BCBE-D61A4589D674}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8A8A6F8E-C2D8-42D6-8276-47F6AE8886E4}
